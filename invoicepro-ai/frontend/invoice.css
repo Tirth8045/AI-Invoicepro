@@ -1,0 +1,101 @@
+body {
+  background: #f8f9fa;
+}
+
+.hero-section {
+  padding: 80px 0;
+}
+
+.hero-section h1 {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.hero-section p {
+  margin: 20px 0;
+  color: #555;
+}
+
+.hero-img {
+  width: 80%;
+  margin-left: 160px;
+}
+
+.hero-img {
+  max-width: 420px;
+}
+
+
+.stats-section {
+  background: #fff;
+  padding: 50px 0;
+}
+
+.stats-section i {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.features-section {
+  padding: 70px 0;
+}
+
+.feature-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 10px rgba(0,0,0,.05);
+}
+
+.feature-card i {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.footer {
+  background: #212529;
+  color: white;
+  text-align: center;
+  padding: 15px;
+}
+.auth-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+}
+
+.auth-card {
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  width: 320px;
+}
+
+.auth-card input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 12px;
+}
+
+.auth-btn {
+  width: 100%;
+  padding: 10px;
+  background: #0d6efd;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+}
+
+.close {
+  float: right;
+  cursor: pointer;
+  font-size: 22px;
+}
+.auth-card input::placeholder {
+  color: #999;
+}

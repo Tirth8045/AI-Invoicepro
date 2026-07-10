@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>InvoicePro - Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+  <style>
+    body {
+      background: #f8f9fa;
+    }
+
+    #sidebar {
+      min-height: 100vh;
+      border-right: 1px solid #ddd;
+    }
+
+    #sidebar a {
+      color: #333;
+      padding: 10px 14px;
+      border-radius: 6px;
+      display: block;
+      text-decoration: none;
+    }
+
+    #sidebar a:hover {
+      background: #e9ecef;
+    }
+
+    #sidebar a.active {
+      background: #0d6efd;
+      color: #fff !important;
+      font-weight: 600;
+    }
+
+    .card {
+      border-radius: 12px;
+    }
+
+    .menu-toggle {
+      cursor: pointer;
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-box {
+      background: #fff;
+      border-radius: 14px;
+      padding: 30px;
+      width: 440px;
+      max-width: 95vw;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    }
+
+    .profile-pic-btn {
+      cursor: pointer;
+      position: relative;
+      display: inline-block;
+    }
+
+    .profile-pic-btn img {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #0d6efd;
+    }
+
+    .cropper-container-wrap {
+      max-height: 380px;
+      overflow: hidden;
+      background: #000;
+      border-radius: 8px;
+    }
+
+    #cropPreview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 3px solid #0d6efd;
+    }
+
+    #cropPreview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    #appRoot {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div id="appRoot">
+
+    <nav class="navbar navbar-light bg-white px-4 d-flex justify-content-between border-bottom sticky-top shadow-sm">
+      <div class="d-flex align-items-center gap-3">
+        <i class="fa fa-bars fs-4 menu-toggle" id="menuToggle"></i>
+        <a class="navbar-brand fw-bold fs-4 text-primary" href="#">InvoicePro</a>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="fw-semibold" id="navUserName"></span>
+        <span class="profile-pic-btn" onclick="openProfileModal()" title="Change profile picture">
+          <img id="navProfilePic" src="" alt="Profile">
+        </span>
+        <a href="#" onclick="confirmLogout()" class="btn btn-sm btn-outline-danger ms-2">
+          <i class="fa fa-sign-out-alt me-1"></i>Logout
+        </a>
+      </div>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <div id="sidebar" class="col-md-2 bg-white p-3">
+          <h6 class="text-muted mb-3 ps-2 small">MENU</h6>
+          <ul class="nav flex-column gap-1">
+            <li><a class="nav-link active menu-link" data-page="dashboard" href="#"><i
+                  class="fa fa-home me-2"></i>Dashboard</a></li>
+            <li><a class="nav-link menu-link" data-page="customers" href="#"><i
+                  class="fa fa-users me-2"></i>Customers</a></li>
+            <li><a class="nav-link menu-link" data-page="products" href="#"><i class="fa fa-box me-2"></i>Products</a>
+            </li>
+            <li><a class="nav-link menu-link" data-page="createInvoice" href="#"><i
+                  class="fa fa-plus-circle me-2"></i>Create Invoice</a></li>
+            <li><a class="nav-link menu-link" data-page="invoices" href="#"><i
+                  class="fa fa-file-invoice me-2"></i>Invoices</a></li>
+          </ul>
+        </div>
+
+        <div class="col-md-10 p-4">
+
+          <div id="dashboard" class="page">
+            <h3 class="fw-bold mb-4">Dashboard</h3>
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="card text-center p-4 shadow-sm">
+                  <i class="fa fa-users fa-2x mb-2 text-primary"></i>
+                  <h6 class="text-muted">Total Customers</h6>
+                  <h2 id="statCustomers" class="fw-bold">0</h2>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card text-center p-4 shadow-sm">
+                  <i class="fa fa-box fa-2x mb-2 text-success"></i>
+                  <h6 class="text-muted">Total Products</h6>
+                  <h2 id="statProducts" class="fw-bold">0</h2>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="card text-center p-4 shadow-sm">
+                  <i class="fa fa-file-invoice fa-2x mb-2 text-warning"></i>
+                  <h6 class="text-muted">Total Invoices</h6>
+                  <h2 id="statInvoices" class="fw-bold">0</h2>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card text-center p-4 shadow-sm">
+                  <i class="fa fa-clock fa-2x mb-2 text-danger"></i>
+                  <h6 class="text-muted">Number of Pending Payments</h6>
+                  <h2 id="statPendingCount" class="fw-bold">0</h2>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="card text-center p-4 shadow-sm">
+                  <i class="fa fa-rupee-sign fa-2x mb-2 text-danger"></i>
+                  <h6 class="text-muted">Total Amount of Pending Payments</h6>
+                  <h2 id="statPendingAmount" class="fw-bold">₹0</h2>
+                </div>
+              </div>
+              <div class="col-12">
+                <div class="card text-center p-4 shadow-sm">
+                  <i class="fa fa-chart-line fa-2x mb-2 text-success"></i>
+                  <h6 class="text-muted">Total Revenue (from Paid Invoices)</h6>
+                  <h2 id="statRevenue" class="fw-bold">₹0</h2>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="customers" class="page d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="fw-bold mb-0">Customers</h3>
+              <button class="btn btn-primary" onclick="openCustomerModal(-1)"><i class="fa fa-plus me-1"></i> Add
+                Customer</button>
+            </div>
+            <div class="card shadow-sm">
+              <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="customerTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="products" class="page d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="fw-bold mb-0">Products</h3>
+              <button class="btn btn-primary" onclick="openProductModal(-1)"><i class="fa fa-plus me-1"></i> Add
+                Product</button>
+            </div>
+            <div class="card shadow-sm">
+              <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                  <tr>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Price</th>
+                    <th>Unit</th>
+                    <th>Stock Qty</th>
+                    <th>Description</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="productTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div id="createInvoice" class="page d-none">
+            <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+              <h3 class="fw-bold mb-0">Create Invoice</h3>
+              <button class="btn btn-outline-primary" onclick="openCreateWithAI()">
+                <i class="fa fa-magic me-2"></i>Create with AI
+              </button>
+            </div>
+            <div class="card shadow-sm p-4">
+              <div class="row g-3 mb-4">
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Customer <span class="text-danger">*</span></label>
+                  <select class="form-select" id="invoiceCustomer">
+                    <option value="">-- Select Customer --</option>
+                  </select>
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Invoice Date <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" id="invoiceDate">
+                </div>
+                <div class="col-md-4">
+                  <label class="form-label fw-semibold">Due Date <span class="text-danger">*</span></label>
+                  <input type="date" class="form-control" id="invoiceDueDate">
+                </div>
+              </div>
+              <h6 class="fw-bold mb-2">Invoice Items</h6>
+              <div class="table-responsive">
+                <table class="table table-bordered align-middle">
+                  <thead class="table-light">
+                    <tr>
+                      <th style="min-width:180px">Product</th>
+                      <th style="width:90px">Qty</th>
+                      <th style="width:140px">Unit Price (₹)</th>
+                      <th style="width:130px">Total (₹)</th>
+                      <th style="width:50px"></th>
+                    </tr>
+                  </thead>
+                  <tbody id="invoiceItemsBody"></tbody>
+                </table>
+              </div>
+              <div class="d-flex justify-content-between align-items-center mt-1 mb-3">
+                <button class="btn btn-outline-primary btn-sm" onclick="addInvoiceRow()"><i
+                    class="fa fa-plus me-1"></i>Add Row</button>
+                <h5 class="mb-0">Grand Total: <span id="invoiceGrandTotal" class="text-success fw-bold">₹0.00</span>
+                </h5>
+              </div>
+              <button class="btn btn-success px-4" onclick="saveInvoice()"><i class="fa fa-save me-2"></i>Save
+                Invoice</button>
+            </div>
+          </div>
+
+          <div id="invoices" class="page d-none">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h3 class="fw-bold mb-0">Invoices</h3>
+            </div>
+
+            <!-- ===== AI INSIGHTS SECTION ===== -->
+            <div id="aiInsightsBox" class="mb-4" style="display:none;">
+              <div class="card shadow-sm border-0"
+                style="background:linear-gradient(135deg,#f0f4ff 0%,#fff 100%);border-left:4px solid #0d6efd !important;">
+                <div class="card-body">
+                  <div class="d-flex align-items-center mb-3">
+                    <span style="font-size:20px;margin-right:8px;">💡</span>
+                    <h6 class="fw-bold mb-0 text-primary">AI Insights</h6>
+                    <span class="badge bg-primary ms-2 fw-normal" style="font-size:10px;">Powered by Gemini AI</span>
+                    <button onclick="loadAIInsights()" class="btn btn-sm btn-outline-primary ms-auto"
+                      style="font-size:11px;"><i class="fa fa-refresh me-1"></i>Refresh</button>
+                  </div>
+                  <div id="aiInsightsList">
+                    <div class="text-muted small"><i class="fa fa-spinner fa-spin me-2"></i>Analyzing your business
+                      data...</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card shadow-sm">
+              <table class="table table-hover mb-0">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Invoice #</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Due Date</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="invoicesTable"></tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <!-- CUSTOMER MODAL -->
+    <div id="customerModal" class="modal-overlay">
+      <div class="modal-box">
+        <h5 id="customerModalTitle" class="fw-bold">Add Customer</h5>
+        <div class="mb-3"><label class="form-label">Full Name <span class="text-danger">*</span></label>
+          <input type="text" id="custName" class="form-control" placeholder="e.g. Rahul Sharma">
+        </div>
+        <div class="mb-3"><label class="form-label">Email <span class="text-danger">*</span></label>
+          <input type="email" id="custEmail" class="form-control" placeholder="email@example.com">
+        </div>
+        <div class="mb-4"><label class="form-label">Phone <span class="text-danger">*</span></label>
+          <input type="text" id="custPhone" class="form-control" placeholder="10-digit number">
+        </div>
+        <div class="d-flex gap-2">
+          <button id="customerSaveBtn" class="btn btn-success" onclick="saveCustomer()">Save</button>
+          <button class="btn btn-secondary" onclick="closeCustomerModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRODUCT MODAL -->
+    <div id="productModal" class="modal-overlay">
+      <div class="modal-box">
+        <h5 id="productModalTitle" class="fw-bold">Add Product</h5>
+        <div class="mb-3"><label class="form-label">Product Name <span class="text-danger">*</span></label>
+          <input type="text" id="prodName" class="form-control" placeholder="e.g. Laptop">
+        </div>
+        <div class="mb-3"><label class="form-label">Price (₹) <span class="text-danger">*</span></label>
+          <input type="number" id="prodPrice" class="form-control" placeholder="e.g. 50000" min="0">
+        </div>
+        <div class="mb-3"><label class="form-label">Unit</label>
+          <input type="text" id="prodUnit" class="form-control" placeholder="e.g. piece, kg, hr">
+        </div>
+        <div class="mb-3"><label class="form-label">Stock Quantity <span class="text-danger">*</span></label>
+          <input type="number" id="prodQty" class="form-control" placeholder="e.g. 100" min="0" value="0">
+        </div>
+        <div class="mb-4"><label class="form-label">Description</label>
+          <input type="text" id="prodDesc" class="form-control" placeholder="Short description (optional)">
+        </div>
+        <div class="d-flex gap-2">
+          <button id="productSaveBtn" class="btn btn-success" onclick="saveProduct()">Save</button>
+          <button class="btn btn-secondary" onclick="closeProductModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- PROFILE MODAL -->
+    <div id="profileModal" class="modal-overlay">
+      <div class="modal-box" style="width:340px">
+        <h5 class="fw-bold mb-3">Profile Picture</h5>
+        <div class="text-center mb-3">
+          <img id="profileModalPic" src="" alt="Profile"
+            style="width:100px;height:100px;border-radius:50%;object-fit:cover;border:3px solid #0d6efd;">
+        </div>
+        <div class="d-grid gap-2">
+          <label class="btn btn-primary" for="profileFileInput">
+            <i class="fa fa-upload me-2"></i>Upload New Picture
+            <input type="file" id="profileFileInput" accept="image/*" style="display:none"
+              onchange="onProfileFileSelected(this)">
+          </label>
+          <button class="btn btn-outline-danger" onclick="removeProfilePic()"><i class="fa fa-trash me-2"></i>Remove
+            Picture</button>
+          <button class="btn btn-secondary" onclick="closeProfileModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- CROPPER MODAL -->
+    <div id="cropperModal" class="modal-overlay">
+      <div class="modal-box" style="width:580px">
+        <h5 class="fw-bold mb-3">Crop Your Photo</h5>
+        <div class="d-flex gap-2 mb-3">
+          <button class="btn btn-sm btn-outline-primary active" id="btnCircle" onclick="setCropShape('circle')">⭕
+            Circle</button>
+          <button class="btn btn-sm btn-outline-primary" id="btnSquare" onclick="setCropShape('square')">🟦
+            Square</button>
+          <button class="btn btn-sm btn-outline-primary" id="btnFree" onclick="setCropShape('free')">✂️ Free</button>
+        </div>
+        <div class="cropper-container-wrap mb-3">
+          <img id="cropperImage" src="" style="max-width:100%;display:block;">
+        </div>
+        <div class="d-flex flex-wrap gap-2 mb-3">
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.rotate(-90)"><i
+              class="fa fa-rotate-left"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.rotate(90)"><i
+              class="fa fa-rotate-right"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.zoom(0.1)"><i
+              class="fa fa-magnifying-glass-plus"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.zoom(-0.1)"><i
+              class="fa fa-magnifying-glass-minus"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.reset()"><i
+              class="fa fa-arrows-rotate"></i></button>
+        </div>
+        <div class="d-flex align-items-center gap-3 mb-3">
+          <span class="text-muted small">Preview:</span>
+          <div id="cropPreview"><img src="" alt="preview"></div>
+        </div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-success" onclick="applyCrop()"><i class="fa fa-check me-1"></i>Apply & Save</button>
+          <button class="btn btn-secondary" onclick="closeCropperModal()">Cancel</button>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /appRoot -->
+
+  <script>
+    // ===== AUTH GUARD (replaces PHP session_start()/isset($_SESSION['user_id']) redirect) =====
+    var CURRENT_USER_ID = null;
+    var CURRENT_USER_NAME = "";
+
+    fetch("/api/auth/me", { credentials: "same-origin" })
+      .then(function (res) { return res.json(); })
+      .then(function (data) {
+        if (!data.success) {
+          window.location.href = "index.html";
+          return;
+        }
+        CURRENT_USER_ID = data.data.id;
+        CURRENT_USER_NAME = data.data.name;
+        document.getElementById("navUserName").textContent = CURRENT_USER_NAME;
+        var defaultPic = "https://ui-avatars.com/api/?name=" + encodeURIComponent(CURRENT_USER_NAME) + "&background=0d6efd&color=fff&size=64";
+        document.getElementById("navProfilePic").src = data.data.profilePic ? data.data.profilePic : defaultPic;
+        document.getElementById("appRoot").style.display = "block";
+        // Kick off the dashboard's own data loading now that we know the user is authenticated
+        if (window.initDashboardApp) window.initDashboardApp();
+      })
+      .catch(function () {
+        window.location.href = "index.html";
+      });
+  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+  <script src="dashboard-real.js"></script>
+
+  <!-- ===== AI CREATE INVOICE MODAL ===== -->
+  <div id="aiInvoiceModal" class="modal-overlay">
+    <div class="modal-box" style="width:520px;max-height:90vh;overflow-y:auto;">
+      <h5 class="fw-bold mb-2"><i class="fa fa-magic text-primary me-2"></i>Create Invoice with AI</h5>
+      <p class="text-muted small mb-3">Paste any text containing invoice details and AI will autofill the form. Stock
+        will be checked automatically.</p>
+      <div id="aiParseStep1">
+        <label class="form-label fw-semibold">Paste Invoice Text Here</label>
+        <textarea id="aiInvoiceText" class="form-control" rows="6"
+          placeholder="e.g. Invoice for Rahul Sharma: 5 units of Sugar at ₹50 each, 2 kg of Salt at ₹20"></textarea>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-secondary" onclick="closeAIInvoiceModal()">Cancel</button>
+          <button class="btn btn-primary" onclick="generateAIInvoice()">
+            <i class="fa fa-magic me-1"></i>Generate Invoice
+          </button>
+        </div>
+        <div id="aiParseLoading" class="text-center py-3 d-none">
+          <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+          <span class="text-muted small">AI is analyzing your text...</span>
+        </div>
+        <div id="aiParseError" class="alert alert-danger mt-2 d-none small"></div>
+      </div>
+      <div id="aiParseStep2" class="d-none">
+        <div class="alert alert-success d-flex align-items-center mb-3">
+          <i class="fa fa-check-circle me-2"></i>
+          <span class="small">Invoice data extracted successfully!</span>
+        </div>
+        <div id="aiStockWarning" class="alert alert-warning d-none small mb-3"></div>
+        <div id="aiParsedPreview" class="border rounded p-3 mb-3 bg-light"></div>
+        <div class="d-flex gap-2">
+          <button class="btn btn-secondary btn-sm" onclick="aiParseBack()"><i
+              class="fa fa-arrow-left me-1"></i>Back</button>
+          <button class="btn btn-primary" onclick="applyAIInvoice()"><i class="fa fa-check me-1"></i>Fill Invoice
+            Form</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== AI REMINDER MODAL ===== -->
+  <div id="aiReminderModal" class="modal-overlay">
+    <div class="modal-box" style="width:520px;max-height:90vh;overflow-y:auto;">
+      <h5 class="fw-bold mb-2"><i class="fa fa-envelope text-primary me-2"></i>AI-Generated Reminder</h5>
+      <div id="aiReminderLoading" class="text-center py-4">
+        <div class="spinner-border spinner-border-sm text-primary me-2"></div>
+        <span class="text-muted small">Generating email reminder...</span>
+      </div>
+      <div id="aiReminderContent" class="d-none">
+        <textarea id="aiReminderText" class="form-control" rows="12"
+          style="font-size:13px;font-family:monospace;"></textarea>
+        <div class="d-flex gap-2 mt-3">
+          <button class="btn btn-secondary" onclick="closeAIReminderModal()">Close</button>
+          <button class="btn btn-primary" onclick="copyAIReminder()">
+            <i class="fa fa-copy me-1"></i>Copy Text
+          </button>
+        </div>
+      </div>
+      <div id="aiReminderError" class="alert alert-danger d-none small mt-2"></div>
+    </div>
+  </div>
+
+</body>
+
+</html>

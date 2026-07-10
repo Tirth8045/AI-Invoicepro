@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>InvoicePro - Landing</title>
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+<link rel="stylesheet" href="invoice.css">
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<nav class="navbar navbar-expand-lg bg-white border-bottom px-4">
+  <div class="container-fluid">
+    <a class="navbar-brand fw-bold" href="#">InvoicePro</a>
+
+    <div class="collapse navbar-collapse justify-content-end">
+      <ul class="navbar-nav me-4 gap-3">
+        <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Features</a></li>
+        <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
+      </ul>
+<div class="nav-auth">
+  <button type="button" onclick="openLogin()" class="btn btn-outline-primary me-2">Login</button>
+  <button type="button" onclick="openSignup()" class="btn btn-primary">Sign Up</button>
+</div>
+
+    </div>
+  </div>
+
+</nav>
+
+<!-- HERO -->
+<section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+
+      <div class="col-md-6">
+        <h1>Invoicing Software for Small Business</h1>
+        <p>Create professional invoices, manage customers, products and download PDF invoices easily using our Online Billing & Invoice Management System.</p>
+        <button class="btn btn-danger btn-lg" onclick="openLogin()">Get Started</button>
+      </div>
+
+      <div class="col-md-6 text-center">
+     <img src="cipat-web.jpg" class="hero-img" alt="Invoice Dashboard">
+
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="stats-section">
+  <div class="container">
+    <div class="row text-center">
+      <div class="col-md-3">
+        <i class="fa fa-users"></i>
+        <h4>1K+</h4>
+        <p>Customers</p>
+      </div>
+      <div class="col-md-3">
+        <i class="fa fa-file-invoice"></i>
+        <h4>10K+</h4>
+        <p>Invoices Created</p>
+      </div>
+      <div class="col-md-3">
+        <i class="fa fa-globe"></i>
+        <h4>Free</h4>
+        <p>Web App</p>
+      </div>
+      <div class="col-md-3">
+        <i class="fa fa-star"></i>
+        <h4>4.8/5</h4>
+        <p>User Rating</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section class="features-section">
+  <div class="container">
+    <h2 class="text-center mb-4">Why Choose Our System?</h2>
+
+    <div class="row g-4">
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="fa fa-user"></i>
+          <h5>Customer Management</h5>
+          <p>Add, edit and manage customers easily.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="fa fa-box"></i>
+          <h5>Product Management</h5>
+          <p>Manage product price and stock information.</p>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="feature-card">
+          <i class="fa fa-file-pdf"></i>
+          <h5>PDF Invoice</h5>
+          <p>Generate and download invoice in PDF format.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  © 2026 Online Billing & Invoice Management System
+</footer>
+<!-- LOGIN MODAL -->
+<div id="loginBox" class="auth-modal">
+  <div class="auth-card">
+    <span class="close" onclick="closeAuth()">&times;</span>
+    <h2>Login</h2>
+
+    <form id="loginForm" onsubmit="doLogin(event)">
+     <input type="text" id="loginUser" placeholder="Email or Mobile" required>
+  <input type="password" id="loginPass" placeholder="Password" required>
+ 
+     <button type="submit" class="auth-btn">Login</button>
+    </form>
+
+    <p>Don’t have an account?
+      <span onclick="switchToSignup()">Sign Up</span>
+    </p>
+  </div>
+</div>
+
+
+<!-- SIGNUP MODAL -->
+<div id="signupBox" class="auth-modal">
+  <div class="auth-card">
+    <span class="close" onclick="closeAuth()">&times;</span>
+    <h2>Create Account</h2>
+
+    <form id="signupForm" onsubmit="doSignup(event)">
+    <input type="text" id="signupName" placeholder="Full Name" required>
+  <input type="tel" id="signupMobile" placeholder="Mobile Number" required>
+  <input type="email" id="signupUser" placeholder="Email" required>
+  <input type="password" id="signupPass" placeholder="Password" required>
+
+    <button type="submit" class="auth-btn">Sign Up</button>
+   </form>
+
+    <p>Already have an account?
+      <span onclick="switchToLogin()">Login</span>
+    </p>
+  </div>
+</div>
+
+
+<script src="index.js"></script>
+</body>
+</html>
