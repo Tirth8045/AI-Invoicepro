@@ -1,3 +1,5 @@
+<img width="1510" height="710" alt="Screenshot 2026-07-15 145245" src="https://github.com/user-attachments/assets/e8f47538-d93c-42b0-a00f-ea02cef78f17" />
+<img width="1510" height="710" alt="Screenshot 2026-07-15 145245" src="https://github.com/user-attachments/assets/dce42a81-1eb3-4762-bbd3-8ee6b974ea1c" />
 # InvoicePro AI 🧾✨
 
 A full-stack **MERN** billing & invoicing platform with built-in AI assistance — create invoices from plain English, get automated business insights, and generate payment reminder emails in one click.
@@ -100,6 +102,20 @@ GROQ_MODEL=openai/gpt-oss-20b
 ```
 
 > ⚠️ **Never commit your real `.env` file.** Keep it listed in `.gitignore` and only commit `.env.example` with placeholder values.
+
+SCREENSHOTS
+<img width="1510" height="710" alt="Screenshot 2026-07-15 145245" src="https://github.com/user-attachments/assets/4813835e-8f93-4e62-abb9-b97d488ec54a" />
+
+<img width="1512" height="720" alt="image" src="https://github.com/user-attachments/assets/1eaa5561-f2d9-4cdb-a3c8-51e11a280f08" />
+
+<img width="1495" height="703" alt="image" src="https://github.com/user-attachments/assets/e6cb8456-fdd4-4e9b-bfba-26cbb9df8db6" />
+
+<img width="1492" height="688" alt="image" src="https://github.com/user-attachments/assets/cc28f16e-b6f5-413e-b54f-4be9161e3ae2" />
+
+<img width="1492" height="693" alt="image" src="https://github.com/user-attachments/assets/456d446f-c9a4-4194-ad41-fb83f310d2e4" />
+
+
+
 
 ### MongoDB Transactions Note
 Multi-document transactions require MongoDB to run as a replica set (Atlas clusters have this by default). On a plain local `mongod`, the app automatically detects this and falls back to a manual rollback sequence — no extra setup needed either way. To enable real transactions locally:
