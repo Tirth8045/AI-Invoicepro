@@ -1,5 +1,4 @@
-<img width="1510" height="710" alt="Screenshot 2026-07-15 145245" src="https://github.com/user-attachments/assets/e8f47538-d93c-42b0-a00f-ea02cef78f17" />
-<img width="1510" height="710" alt="Screenshot 2026-07-15 145245" src="https://github.com/user-attachments/assets/dce42a81-1eb3-4762-bbd3-8ee6b974ea1c" />
+
 # InvoicePro AI 🧾✨
 
 A full-stack **MERN** billing & invoicing platform with built-in AI assistance — create invoices from plain English, get automated business insights, and generate payment reminder emails in one click.
