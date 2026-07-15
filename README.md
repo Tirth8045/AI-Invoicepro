@@ -102,7 +102,8 @@ GROQ_MODEL=openai/gpt-oss-20b
 
 > ⚠️ **Never commit your real `.env` file.** Keep it listed in `.gitignore` and only commit `.env.example` with placeholder values.
 
-SCREENSHOTS
+SCREENSHOTS(WITH AI FEATURES)
+
 <img width="1510" height="710" alt="Screenshot 2026-07-15 145245" src="https://github.com/user-attachments/assets/4813835e-8f93-4e62-abb9-b97d488ec54a" />
 
 <img width="1512" height="720" alt="image" src="https://github.com/user-attachments/assets/1eaa5561-f2d9-4cdb-a3c8-51e11a280f08" />
