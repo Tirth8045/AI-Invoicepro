@@ -1,7 +1,7 @@
 
 # InvoicePro AI 🧾✨
 
-A full-stack **MERN** billing & invoicing platform with built-in AI assistance — create invoices from plain English, get automated business insights, and generate payment reminder emails in one click.
+A full-stack billing & invoicing platform with built-in AI assistance — create invoices from plain English, get automated business insights, and generate payment reminder emails in one click.
 
 ---
 
