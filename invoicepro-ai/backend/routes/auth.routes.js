@@ -37,7 +37,7 @@ router.post("/signup", upload.none(), async (req, res) => {
     }
 
     const existingmobile = await User.findOne({ mobile});
-    if (existing) {
+    if (existingmobile) {
       return res.json({ success: false, message: "Mobile already registered! Please login." });
     }
 
