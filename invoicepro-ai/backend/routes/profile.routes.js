@@ -15,15 +15,20 @@ router.use(requireAuth);
 
 // GET /api/profile?action=get
 router.get("/", async (req, res) => {
-  const action = req.query.action || "";
-  if (action === "get") {
-    const user = await User.findById(req.session.userId).select("name email profilePic");
-    return res.json({
-      success: true,
-      data: { name: user.name, email: user.email, profile_pic: user.profilePic }
-    });
+  try {
+    const action = req.query.action || "";
+    if (action === "get") {
+      const user = await User.findById(req.session.userId).select("name email profilePic");
+      if (!user) return res.json({ success: false, message: "User not found" });
+      return res.json({
+        success: true,
+        data: { name: user.name, email: user.email, profile_pic: user.profilePic }
+      });
+    }
+    return res.json({ success: false, message: "Invalid action!" });
+  } catch (err) {
+    return res.json({ success: false, message: "Server error" });
   }
-  return res.json({ success: false, message: "Invalid action!" });
 });
 
 // POST /api/profile (action=upload | remove)  -- sent via jQuery $.ajax (urlencoded)

@@ -221,6 +221,7 @@ router.post("/", upload.none(), async (req, res) => {
   // ===================== MARK PAID =====================
   if (action === "markpaid") {
     const id = req.body.id;
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) return res.json({ success: false, message: "Invalid ID!" });
     try {
       const result = await Invoice.findOneAndUpdate({ _id: id, userId }, { status: "paid" });
       if (!result) return res.json({ success: false, message: "Failed to update status." });
@@ -233,6 +234,7 @@ router.post("/", upload.none(), async (req, res) => {
   // ===================== DELETE =====================
   if (action === "delete") {
     const id = req.body.id;
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) return res.json({ success: false, message: "Invalid ID!" });
     try {
       await Invoice.findOneAndDelete({ _id: id, userId });
       return res.json({ success: true, message: "Invoice deleted!" });

@@ -406,7 +406,7 @@ function renderInvoices() {
     html += '<tr><td>' + inv.invoice_number + '</td><td>' + inv.customer_name + '</td><td>' + inv.issue_date + '</td><td>' + inv.due_date + '</td>' +
       '<td>₹' + parseFloat(inv.total_amount).toLocaleString("en-IN") + '</td><td>' + badge + '</td><td>' +
       paidBtn +
-      '<button class="btn btn-primary btn-sm me-1" onclick="viewInvoice(' + i + ')">View PDF</button>' +
+      '<button class="btn btn-primary btn-sm me-1" onclick="viewInvoice(\'' + inv.id + '\')">View PDF</button>' +
       reminderBtn +
       '<button class="btn btn-danger btn-sm" onclick="deleteInvoice(\'' + inv.id + '\')">Delete</button>' +
       '</td></tr>';
@@ -429,8 +429,12 @@ function deleteInvoice(id) {
   });
 }
 
-function viewInvoice(index) {
-  var inv = invoicesList[index];
+function viewInvoice(id) {
+  var inv = null;
+  for (var i = 0; i < invoicesList.length; i++) {
+    if (invoicesList[i].id === id) { inv = invoicesList[i]; break; }
+  }
+  if (!inv) { alert("Invoice not found!"); return; }
   var rows = "";
   inv.items.forEach(function (item) {
     rows += '<tr><td>' + item.product_name + '</td><td style="text-align:center">' + item.quantity + '</td>' +
@@ -440,6 +444,7 @@ function viewInvoice(index) {
   var sc = inv.status === "paid" ? "#198754" : "#ffc107";
   var st = inv.status === "paid" ? "PAID" : "PENDING";
   var win = window.open("", "_blank");
+  if (!win) { alert("Please enable pop-ups to view the invoice PDF."); return; }
   win.document.write('<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Invoice ' + inv.invoice_number + '</title>' +
     '<style>body{font-family:Arial,sans-serif;padding:40px;color:#333}.header{display:flex;justify-content:space-between;border-bottom:3px solid #0d6efd;padding-bottom:16px;margin-bottom:24px}' +
     '.brand{font-size:28px;font-weight:800;color:#0d6efd}.inv-meta{text-align:right;font-size:14px}.inv-meta h3{margin:0 0 6px;color:#0d6efd}' +

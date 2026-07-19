@@ -1,5 +1,6 @@
 const express = require("express");
 const multer = require("multer");
+const mongoose = require("mongoose");
 const requireAuth = require("../middleware/auth");
 const Customer = require("../models/Customer");
 
@@ -58,7 +59,7 @@ router.post("/", upload.none(), async (req, res) => {
       }
     } else {
       const id = req.body.id;
-      if (!id) return res.json({ success: false, message: "Invalid ID!" });
+      if (!id || !mongoose.Types.ObjectId.isValid(id)) return res.json({ success: false, message: "Invalid ID!" });
       try {
         const result = await Customer.findOneAndUpdate(
           { _id: id, userId },
@@ -74,7 +75,7 @@ router.post("/", upload.none(), async (req, res) => {
 
   if (action === "delete") {
     const id = req.body.id;
-    if (!id) return res.json({ success: false, message: "Invalid ID!" });
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) return res.json({ success: false, message: "Invalid ID!" });
     try {
       await Customer.findOneAndDelete({ _id: id, userId });
       return res.json({ success: true, message: "Customer deleted!" });
