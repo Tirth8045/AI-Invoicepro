@@ -80,10 +80,20 @@
     }
 
     .cropper-container-wrap {
-      max-height: 380px;
+      max-height: 50vh;
       overflow: hidden;
       background: #000;
       border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .modal-box {
+        padding: 20px;
+      }
+      .crop-shape-btns,
+      .crop-toolbar {
+        flex-wrap: wrap;
+      }
     }
 
     #cropPreview {
@@ -405,29 +415,22 @@
 
     <!-- CROPPER MODAL -->
     <div id="cropperModal" class="modal-overlay">
-      <div class="modal-box" style="width:580px">
+      <div class="modal-box" style="width:580px;max-width:95vw;max-height:90vh;overflow-y:auto;">
         <h5 class="fw-bold mb-3">Crop Your Photo</h5>
-        <div class="d-flex gap-2 mb-3">
-          <button class="btn btn-sm btn-outline-primary active" id="btnCircle" onclick="setCropShape('circle')">⭕
-            Circle</button>
-          <button class="btn btn-sm btn-outline-primary" id="btnSquare" onclick="setCropShape('square')">🟦
-            Square</button>
+        <div class="d-flex gap-2 mb-3 crop-shape-btns">
+          <button class="btn btn-sm btn-outline-primary active" id="btnCircle" onclick="setCropShape('circle')">⭕ Circle</button>
+          <button class="btn btn-sm btn-outline-primary" id="btnSquare" onclick="setCropShape('square')">🟦 Square</button>
           <button class="btn btn-sm btn-outline-primary" id="btnFree" onclick="setCropShape('free')">✂️ Free</button>
         </div>
         <div class="cropper-container-wrap mb-3">
           <img id="cropperImage" src="" style="max-width:100%;display:block;">
         </div>
-        <div class="d-flex flex-wrap gap-2 mb-3">
-          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.rotate(-90)"><i
-              class="fa fa-rotate-left"></i></button>
-          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.rotate(90)"><i
-              class="fa fa-rotate-right"></i></button>
-          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.zoom(0.1)"><i
-              class="fa fa-magnifying-glass-plus"></i></button>
-          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.zoom(-0.1)"><i
-              class="fa fa-magnifying-glass-minus"></i></button>
-          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.reset()"><i
-              class="fa fa-arrows-rotate"></i></button>
+        <div class="d-flex flex-wrap gap-2 mb-3 crop-toolbar">
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.rotate(-90)"><i class="fa fa-rotate-left"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.rotate(90)"><i class="fa fa-rotate-right"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.zoom(0.1)"><i class="fa fa-magnifying-glass-plus"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.zoom(-0.1)"><i class="fa fa-magnifying-glass-minus"></i></button>
+          <button class="btn btn-sm btn-outline-secondary" onclick="cropperObj.reset()"><i class="fa fa-arrows-rotate"></i></button>
         </div>
         <div class="d-flex align-items-center gap-3 mb-3">
           <span class="text-muted small">Preview:</span>
