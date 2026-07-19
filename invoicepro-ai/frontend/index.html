@@ -15,21 +15,21 @@
 <nav class="navbar navbar-expand-lg bg-white border-bottom px-4">
   <div class="container-fluid">
     <a class="navbar-brand fw-bold" href="#">InvoicePro</a>
-
-    <div class="collapse navbar-collapse justify-content-end">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
       <ul class="navbar-nav me-4 gap-3">
         <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Features</a></li>
         <li class="nav-item"><a class="nav-link" href="#">Pricing</a></li>
       </ul>
-<div class="nav-auth">
-  <button type="button" onclick="openLogin()" class="btn btn-outline-primary me-2">Login</button>
-  <button type="button" onclick="openSignup()" class="btn btn-primary">Sign Up</button>
-</div>
-
+      <div class="nav-auth">
+        <button type="button" onclick="openLogin()" class="btn btn-outline-primary me-2">Login</button>
+        <button type="button" onclick="openSignup()" class="btn btn-primary">Sign Up</button>
+      </div>
     </div>
   </div>
-
 </nav>
 
 <!-- HERO -->
