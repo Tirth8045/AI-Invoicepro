@@ -1,0 +1,8 @@
+invoicepro-ai/backend/node_modules
+invoicepro-ai/backend/.env
+.git
+.gitignore
+*.md
+invoicepro-ai/backend/uploads/profiles/*.png
+invoicepro-ai/backend/uploads/profiles/*.jpg
+!invoicepro-ai/backend/uploads/profiles/.gitkeep
